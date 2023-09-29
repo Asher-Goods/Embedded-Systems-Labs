@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define N 1024;
+#define N 1024
 
 float A[N][N];
 float B[N][N];
