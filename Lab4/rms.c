@@ -33,20 +33,27 @@ int main() {
     printf("\nCPU Utilization: %f\n", cpuUtil);
     // End of your code
     
+    int missedDeadlineA = 0;
+    int missedDeadlineB = 0;
+
     absDeadlineA = periodA, absDeadlineB = periodB;
     printf("\nsimulation started\n");
     for (T = 0; T <= 200; T++) {
         // Your code here to check if CPU can schedule the task set
         // Hint: exit if deadline is missed
-        if(tA >= absDeadlineA)
-        {
-            printf("process A missed deadline! not schedulable\n");
+        if (missedDeadlineA && missedDeadlineB) {
+            printf("Both tasks have missed their deadlines. Exiting simulation.\n");
             break;
         }
-
-        if(tB >= absDeadlineB)
-        {
-            printf("process B missed deadlin! not schedulable\n");
+        
+        // Check for deadline misses and take appropriate action
+        if (doA == 1 && T >= absDeadlineA) {
+            printf("Task A%d missed its deadline at T=%d\n", jA, T);
+            missedDeadlineA = 1;
+        }
+        if (doB == 1 && T >= absDeadlineB) {
+            printf("Task B%d missed its deadline at T=%d\n", jB, T);
+            missedDeadlineB = 1;
         }
             
         // End of your code
