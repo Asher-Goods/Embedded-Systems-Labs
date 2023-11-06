@@ -38,13 +38,13 @@ int main() {
     for (T = 0; T <= 200; T++) {
         // Your code here to check if CPU can schedule the task set
         // Hint: exit if deadline is missed
-        if(tA < absDeadlineA)
+        if(tA >= absDeadlineA)
         {
             printf("process A missed deadline! not schedulable\n");
             break;
         }
-        
-        if(tB < absDeadlineB)
+
+        if(tB >= absDeadlineB)
         {
             printf("process B missed deadlin! not schedulable\n");
         }
