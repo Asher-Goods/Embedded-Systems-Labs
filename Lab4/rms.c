@@ -15,6 +15,8 @@ int main() {
     int tA = 0, tB = 0;             // accumulated execution time
     int T;                          // simulated time
 
+    
+
     // Input handling and reading
     printf("\t\t\t---------------------------------------\n");
     printf("\t\t\tRate Monotonic Schedule (RMS) Algorithm\n");
@@ -26,7 +28,8 @@ int main() {
 
     // Your code here to calculate & print CPU utilization
     // Hint: use the definition of utilization
-    
+    cpuUtil = (float)(execTimeA + execTimeB) / (periodA + periodB);
+    printf("\nCPU Utilization: %f\n", cpuUtil);
     // End of your code
     
     absDeadlineA = periodA, absDeadlineB = periodB;
