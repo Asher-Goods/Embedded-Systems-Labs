@@ -28,7 +28,7 @@ int main() {
 
     // Your code here to calculate & print CPU utilization
     // Hint: use the definition of utilization
-    cpuUtil = (float)(execTimeA + execTimeB) / (periodA + periodB);
+    cpuUtil = (float) ((execTimeA) / (periodA)  + (execTimeB)/(periodB));
     printf("\nCPU Utilization: %f\n", cpuUtil);
     // End of your code
     
