@@ -41,19 +41,18 @@ int main() {
     for (T = 0; T <= 200; T++) {
         // Your code here to check if CPU can schedule the task set
         // Hint: exit if deadline is missed
-        if (missedDeadlineA && missedDeadlineB) {
-            printf("Both tasks have missed their deadlines. Exiting simulation.\n");
-            break;
-        }
         
         // Check for deadline misses and take appropriate action
-        if (doA == 1 && T >= absDeadlineA) {
+        if (T >= absDeadlineA) {
             printf("Task A%d missed its deadline at T=%d\n", jA, T);
             missedDeadlineA = 1;
+            break;
         }
-        if (doB == 1 && T >= absDeadlineB) {
+        if (
+            T >= absDeadlineB) {
             printf("Task B%d missed its deadline at T=%d\n", jB, T);
             missedDeadlineB = 1;
+            break;
         }
             
         // End of your code
