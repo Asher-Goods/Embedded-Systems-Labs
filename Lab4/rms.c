@@ -15,8 +15,6 @@ int main() {
     int tA = 0, tB = 0;             // accumulated execution time
     int T;                          // simulated time
 
-    
-
     // Input handling and reading
     printf("\t\t\t---------------------------------------\n");
     printf("\t\t\tRate Monotonic Schedule (RMS) Algorithm\n");
@@ -27,33 +25,33 @@ int main() {
     scanf("%d%d", &periodB, &execTimeB);
 
     // Your code here to calculate & print CPU utilization
-
+    // Hint: use the definition of utilization
     cpuUtil = ((double)(execTimeA)/(double)(periodA)  + (double)(execTimeB)/(double)(periodB));
-    printf("\nCPU Utilization: %f\n", cpuUtil);
+    printf("CPU Utilization: %.2f\n", cpuUtil);
     // End of your code
     
     int missedDeadlineA = 0;
     int missedDeadlineB = 0;
 
+    // End of your code
+    
     absDeadlineA = periodA, absDeadlineB = periodB;
     printf("\nsimulation started\n");
     for (T = 0; T <= 200; T++) {
         // Your code here to check if CPU can schedule the task set
         // Hint: exit if deadline is missed
+        if (doA && T >= absDeadlineA)
+        {
+            printf("Process A missed deadline! not schedulable\n");
+            break;
+        }
+
+        else if (doB && T >= absDeadlineB)
+        {
+           printf("Process B missed deadline! not schedulable\n");
+           break;
+        }
         
-        // Check for deadline misses and take appropriate action
-        if (T > absDeadlineA && doA) {
-            printf("Task A%d missed its deadline at T=%d\n", jA, T);
-            missedDeadlineA = 1;
-            break;
-        }
-        if (
-            T > absDeadlineB && doB) {
-            printf("Task B%d missed its deadline at T=%d\n", jB, T);
-            missedDeadlineB = 1;
-            break;
-        }
-            
         // End of your code
         
         // process A is done
@@ -106,14 +104,15 @@ int main() {
             printf("when T=%d, process A%d is generated\n", T, ++jA);
             //absDeadlineA += periodA;
             tA = 0;
-            if (tB < execTimeB) { // process B is unfinished yet
-                // Your code here to handle preemption
-                // Please print out the decision
-                
+            if (tB < execTimeB && execTimeB - tB > execTimeA) { // process B is unfinished yet
+                printf("when T=%d, program switched to run process B%d!\n", T, jB);
+                doA = 0;
+                doB = 1;
                 // End of your code
             } else { // process B is done, just run A
                 printf("when T=%d, program switched to run process A%d!\n", T, jA);
                 doA = 1;
+                doB = 0;
             }
         }
 
@@ -122,14 +121,15 @@ int main() {
             printf("when T=%d, process B%d is generated\n", T, ++jB);
             //absDeadlineB += periodB;
             tB = 0;
-            if (tA < execTimeA) { // process A is unfinished yet
-                // Your code here to handle preemption
-                // Please print out the decision
-                
+            if (tA < execTimeA && execTimeA - tA > execTimeB) { // process A is unfinished yet
+                printf("when T=%d, program switched to run process A%d!\n", T, jA);
+                doA = 1;
+                doB = 0;
                 // End of your code
             } else { // process A is done, just run B
                 printf("when T=%d, program switched to run process B%d!\n", T, jB);
                 doB = 1;
+                doA = 0;
             }
         }
         
