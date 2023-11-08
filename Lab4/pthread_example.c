@@ -65,6 +65,72 @@ void *function1() {
 
 }
 
+void *function2() {
+	printf("Thread 2 start\n");
+	fflush(stdout);
+
+    printf("Thread 2 requests the lock\n");
+	fflush(stdout);
+
+	pthread_mutex_lock(&lock);
+	
+    printf("Thread 2 had the lock \n");
+	fflush(stdout);
+
+    int counter = 0;
+	for(int i = 0; i < LOOP_LARGE_NUMBER; i++)
+	{
+		int a = 4*4;
+        if ((i > 0) && (i % LOOP_10PERCENT_NUMBER == 0)) {
+            counter += 1;
+            printf("Thread 2 running, priority %d, process %d0%%...\n", get_real_time_priority(), counter);
+            fflush(stdout);
+        }
+	}
+
+	printf("Thread 2 released the lock\n");
+	fflush(stdout);
+    
+	pthread_mutex_unlock(&lock);
+
+	printf("Thread 1 complete\n");
+	fflush(stdout);
+
+}
+
+void *function3() {
+	printf("Thread 3 start\n");
+	fflush(stdout);
+
+    printf("Thread 3 requests the lock\n");
+	fflush(stdout);
+
+	pthread_mutex_lock(&lock);
+	
+    printf("Thread 3 had the lock \n");
+	fflush(stdout);
+
+    int counter = 0;
+	for(int i = 0; i < LOOP_LARGE_NUMBER; i++)
+	{
+		int a = 4*4;
+        if ((i > 0) && (i % LOOP_10PERCENT_NUMBER == 0)) {
+            counter += 1;
+            printf("Thread 3 running, priority %d, process %d0%%...\n", get_real_time_priority(), counter);
+            fflush(stdout);
+        }
+	}
+
+	printf("Thread 3 released the lock\n");
+	fflush(stdout);
+    
+	pthread_mutex_unlock(&lock);
+
+	printf("Thread 3 complete\n");
+	fflush(stdout);
+
+}
+
 int main() {
 	//Create mutex and initialize it.
 
@@ -83,6 +149,25 @@ int main() {
     pthread_setschedparam(pthread_self(), policy, &param_main);
     printf("Priority of main thread: %d\n", get_real_time_priority());
 
+
+    //Initiate thread 3
+    int priority3 = 1; //define your own priority
+    pthread_t thread3 = { 0 }; 
+    struct sched_param param3 = { 0 };
+	param3.sched_priority = priority3;
+    pthread_attr_t attr3;
+    pthread_attr_init(&attr3);
+    pthread_attr_setinheritsched(&attr3, PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&attr3, policy);
+    pthread_attr_setschedparam(&attr3, &param3);
+
+    //Create thread 3
+	printf("Creating thread3...\n");
+    fflush(stdout);
+	pthread_create(&thread3, &attr3, function3, NULL);
+    sleep(1);
+
+
 	//Initiate thread 1
     int priority1 = 10; //define your own priority
     pthread_t thread1 = { 0 }; 
@@ -99,9 +184,29 @@ int main() {
     fflush(stdout);
 	pthread_create(&thread1, &attr1, function1, NULL);
     sleep(1);
-    
+
+
+    //Initiate thread 2
+    int priority2 = 5; //define your own priority
+    pthread_t thread2 = { 0 }; 
+    struct sched_param param2 = { 0 };
+	param2.sched_priority = priority2;
+    pthread_attr_t attr2;
+    pthread_attr_init(&attr2);
+    pthread_attr_setinheritsched(&attr2, PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&attr2, policy);
+    pthread_attr_setschedparam(&attr2, &param2);
+
+    //Create thread 2
+	printf("Creating thread2...\n");
+    fflush(stdout);
+	pthread_create(&thread2, &attr2, function2, NULL);
+    sleep(1);
+
+
     //Waiting for thread to complete
 	pthread_join(thread1,NULL);
+    pthread_join(thread2,NULL);
 
 	return 0;
 }

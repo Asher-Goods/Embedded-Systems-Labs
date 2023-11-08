@@ -28,7 +28,6 @@ int main() {
 
     // Your code here to calculate & print CPU utilization
 
-    printf("\nPeriod A: %d\n", execTimeA/periodA);
     cpuUtil = ((double)(execTimeA)/(double)(periodA)  + (double)(execTimeB)/(double)(periodB));
     printf("\nCPU Utilization: %f\n", cpuUtil);
     // End of your code
@@ -43,13 +42,13 @@ int main() {
         // Hint: exit if deadline is missed
         
         // Check for deadline misses and take appropriate action
-        if (T >= absDeadlineA) {
+        if (T > absDeadlineA && doA) {
             printf("Task A%d missed its deadline at T=%d\n", jA, T);
             missedDeadlineA = 1;
             break;
         }
         if (
-            T >= absDeadlineB) {
+            T > absDeadlineB && doB) {
             printf("Task B%d missed its deadline at T=%d\n", jB, T);
             missedDeadlineB = 1;
             break;
@@ -86,8 +85,8 @@ int main() {
         // new instances of process A and B are generated together
         if (T % periodA == 0 && T % periodB == 0) {
             printf("when T=%d, process A%d and B%d are generated together\n", T, ++jA, ++jB);
-            absDeadlineA = T + periodA;
-            absDeadlineB = T + periodB;
+            //absDeadlineA += periodA;
+            //absDeadlineB += periodB;
             // RMS: higher rate (1/period) ==> higher priority
             if (periodA <= periodB) {
                 printf("when T=%d, program switched to run process A%d!\n", T, jA);
@@ -105,7 +104,7 @@ int main() {
         // a new instance of process A is generated
         if (T % periodA == 0 && T % periodB != 0) {
             printf("when T=%d, process A%d is generated\n", T, ++jA);
-            absDeadlineA = T + periodA;
+            //absDeadlineA += periodA;
             tA = 0;
             if (tB < execTimeB) { // process B is unfinished yet
                 // Your code here to handle preemption
@@ -121,7 +120,7 @@ int main() {
         // a new instance of process B is generated
         if (T % periodA != 0 && T % periodB == 0) {
             printf("when T=%d, process B%d is generated\n", T, ++jB);
-            absDeadlineB = T + periodB;
+            //absDeadlineB += periodB;
             tB = 0;
             if (tA < execTimeA) { // process A is unfinished yet
                 // Your code here to handle preemption
