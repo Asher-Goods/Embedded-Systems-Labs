@@ -93,7 +93,7 @@ void *function2() {
     
 	pthread_mutex_unlock(&lock);
 
-	printf("Thread 1 complete\n");
+	printf("Thread 2 complete\n");
 	fflush(stdout);
 
 }
@@ -207,6 +207,7 @@ int main() {
     //Waiting for thread to complete
 	pthread_join(thread1,NULL);
     pthread_join(thread2,NULL);
+    pthread_join(thread3, NULL);
 
 	return 0;
 }
