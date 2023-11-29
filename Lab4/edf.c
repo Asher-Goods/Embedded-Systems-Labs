@@ -26,6 +26,11 @@ int main() {
     printf("\nSimulation started\n");
 
     for (T = 0; T <= 200; T++) {
+        if (cpuUtil >= 1)
+        {
+            printf("Not schedulable. CPU Utilization is greater than or equal to 1.\n");
+            break;
+        }
         if (doA && T > absDeadlineA) {
             printf("Process A missed deadline! Not schedulable\n");
             break;

@@ -38,6 +38,8 @@ int main() {
     absDeadlineA = periodA, absDeadlineB = periodB;
     printf("\nsimulation started\n");
     for (T = 0; T <= 200; T++) {
+
+
         // Your code here to check if CPU can schedule the task set
         // Hint: exit if deadline is missed
         if (doA && T >= absDeadlineA)
