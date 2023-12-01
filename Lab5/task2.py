@@ -70,12 +70,13 @@ while True:
         freq_option = [600000, 750000, 1000000, 15000000]
         index = 0
 
+        nextFreq = []
+
         for i in range(4):
             nextFreq.append(desiredFreq // freq_option[i])
 
-            if freq_choice > nextFreq[i]:
-                freq_choice = nextFreq[i]
-                index = i
+        freq_choice = min(nextFreq)
+        index = nextFreq.index(freq_choice)
 
         print(f"next freq: {desiredFreq}\n")
 
@@ -84,4 +85,3 @@ while True:
 
     except IOError:
         print("Couldn't open file")
-
