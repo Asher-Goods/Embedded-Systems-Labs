@@ -67,21 +67,13 @@ while True:
 
         desiredFreq = int(1.25 * 15000 * maxUtil)
 
-        freq_option = [600000, 750000, 1000000, 15000000]
-        index = 0
+        if 600000 <= desiredFreq <= 15000000:  # Ensure desiredFreq is within a valid range
+            with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed", "w") as outfile:
+                outfile.write(str(desiredFreq))
+                print(f"Setting frequency to: {desiredFreq}")
+        else:
+            print(f"Invalid frequency value: {desiredFreq}")
 
-        nextFreq = []
-
-        for i in range(4):
-            nextFreq.append(desiredFreq // freq_option[i])
-
-        freq_choice = min(nextFreq)
-        index = nextFreq.index(freq_choice)
-
-        print(f"next freq: {desiredFreq}\n")
-
-        with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed", "w") as outfile:
-            outfile.write(str(desiredFreq))
-
-    except IOError:
-        print("Couldn't open file")
+    except IOError as e:
+        print(f"Error: {e}")
+        time.sleep(1)  # Add a short delay before retrying in case of a file access issue
