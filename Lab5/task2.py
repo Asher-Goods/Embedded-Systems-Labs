@@ -67,13 +67,24 @@ while True:
 
         desiredFreq = int(1.25 * 15000 * maxUtil)
 
-        if 600000 <= desiredFreq <= 15000000:  # Ensure desiredFreq is within a valid range
-            with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed", "w") as outfile:
-                outfile.write(str(desiredFreq))
-                print(f"Setting frequency to: {desiredFreq}")
-        else:
-            print(f"Invalid frequency value: {desiredFreq}")
+        # Get available frequencies
+        try:
+            available_frequencies = [int(f) for f in open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies").read().split()]
+        except IOError as e:
+            print(f"Error reading available frequencies: {e}")
+            time.sleep(1)
+            continue
+
+        # Choose the closest available frequency to the desired frequency
+        closest_freq = min(available_frequencies, key=lambda x: abs(x - desiredFreq))
+
+        print(f"desiredFreq: {desiredFreq}")
+        print(f"Closest available frequency: {closest_freq}")
+
+        with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed", "w") as outfile:
+            outfile.write(str(closest_freq))
+            print(f"Setting frequency to: {closest_freq}")
 
     except IOError as e:
         print(f"Error: {e}")
-        time.sleep(1)  # Add a short delay before retrying in case of a file access issue
+        time.sleep(1)
