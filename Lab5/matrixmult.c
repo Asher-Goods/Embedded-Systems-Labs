@@ -40,7 +40,7 @@ void multiplyMatricesOptimized(float A[][N], float B[][N], float C[][N])
 
 int main()
 {
-
+    printf("Size N = %d \n", N);
     /* Randomly initialize the matrices */
     srand((unsigned)time(NULL));
     for (int i = 0; i < N; i++)
@@ -62,6 +62,6 @@ int main()
     float elapse = (float)(end_time - start_time) / CLOCKS_PER_SEC;
     
     printf("elapse: %.4f seconds\n", elapse);
-
+    
     return 0;
 }

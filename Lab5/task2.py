@@ -5,11 +5,12 @@ import time
 def set_userspace_governor():
     try:
         subprocess.run('echo "userspace" | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor', shell=True, check=True)
-        print("CPU governor set to userspace")
+        #print("CPU governor set to userspace")
     except subprocess.CalledProcessError as e:
         print(f"Error setting CPU governor: {e}")
 
 # Main loop
+set_userspace_governor()
 while True:
     try:
         with open("/proc/stat", "r") as inputFile:
@@ -92,12 +93,13 @@ while True:
         print(f"Closest available frequency: {closest_freq}")
 
         # Set CPU governor to userspace
-        set_userspace_governor()
+        #set_userspace_governor()
 
         # Set CPU frequency
         with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed", "w") as outfile:
             outfile.write(str(closest_freq))
             print(f"Setting frequency to: {closest_freq}")
+            print("")
 
     except IOError as e:
         print(f"Error: {e}")
