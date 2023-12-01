@@ -4,7 +4,7 @@ import time
 # Function to set CPU governor to userspace
 def set_userspace_governor():
     try:
-        subprocess.run(["sudo", "cpupower", "frequency-set", "--governor", "userspace"], check=True)
+        subprocess.run('echo "userspace" | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor', shell=True, check=True)
         print("CPU governor set to userspace")
     except subprocess.CalledProcessError as e:
         print(f"Error setting CPU governor: {e}")
